@@ -1,14 +1,11 @@
-
-name: Continuous Integration with Github, Github Actions, and Docker Hub.
+name: Continuous Integration with Github, Github Actions, and Docker Hub
 
 on:
   push:
     branches: "main" 
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +16,6 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        
 
     - name: Setup Java JDK
       uses: actions/setup-java@v4.2.1
@@ -36,10 +32,10 @@ jobs:
       working-directory: .
       run: docker compose build
       
-    - name: Push to Docker Hub Container Registry 
-      run:
-           docker tag docker-from-zero-to-mastery-java:latest ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:latest
-           docker tag docker-from-zero-to-mastery-java:latest ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:${{ github.run_id }}
-
-           docker push ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:latest
-           docker push ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:${{github.run_id}}
+    - name: Push to Docker Hub Container Registry
+      run: |
+        docker tag docker-from-zero-to-mastery-java:latest ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:latest
+        docker tag docker-from-zero-to-mastery-java:latest ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:${{ github.run_id }}
+        
+        docker push ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/docker-from-zero-to-mastery-java:${{ github.run_id }}
